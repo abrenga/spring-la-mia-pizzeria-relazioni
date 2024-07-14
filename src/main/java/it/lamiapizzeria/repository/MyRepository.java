@@ -14,6 +14,6 @@ public interface MyRepository extends JpaRepository<ModelofmenuDB, Integer>{
 
 	List<ModelofmenuDB> findByName(String name);
 
-
+	
 
 }

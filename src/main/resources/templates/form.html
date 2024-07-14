@@ -12,11 +12,11 @@
 <body>
 	<div th:replace="~{fragment.html::header-block}"></div>
 	<div class="container p-5">
-		<h1 class="mt-5 fs-2 text-center">Inserisci una nuova pizza:</h1>
+		<h1 class="mt-5 fs-2 text-center" th:text="${update}? 'Modifica pizza:' : 'inserisci pizza:'">Inserisci :</h1>
 		<div class=" d-flex align-items-center position-absolute top-50 start-50 translate-middle">
 
-			<form class="mx-auto p-2" style="width: 200px;" id="form-insert" th:object="${menu}" th:action="@{/index/form}"
-				method="post">
+			<form class="mx-auto p-2" style="width: 200px;" id="form-insert" th:object="${menu}" th:action="${update} ? @{/form/{id}(id = ${menu.id})} : @{/index/form}"
+				method="post" >
 
 				<label for="name">nome:</label>
 				<input type="text" id="name" th:field="*{name}" th:errorClass="is-invalid">

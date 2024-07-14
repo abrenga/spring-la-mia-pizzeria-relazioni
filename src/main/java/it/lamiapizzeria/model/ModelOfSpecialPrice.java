@@ -21,19 +21,23 @@ public class ModelOfSpecialPrice {
 
     private String NameOfSpecialPrice;
 
-    @Column(name="£special_Price", nullable=false)
-    private LocalDateTime  speciaPriceDate;
+    public void setSpecialPriceDate(LocalDateTime specialPriceDate) {
+        this.specialPriceDate = specialPriceDate;
+    }
+
+    @Column(name="special_price", nullable=false)
+    private LocalDateTime specialPriceDate;
 
 
     @Column()
-    private String Description;
+    private String description;
 
 
     @ManyToOne
     @JoinColumn(name="pizza_id" ,nullable=false)
     private ModelofmenuDB pizze;
 
-
+    private LocalDateTime endOfSpecialPrice;
 
     public Integer getId() {
         return id;
@@ -55,13 +59,13 @@ public class ModelOfSpecialPrice {
     }
 
 
-    public void setSpeciaPriceDate(LocalDateTime speciaPriceDate) {
-        this.speciaPriceDate = speciaPriceDate;
+    public void setSpecialPrice(LocalDateTime specialPrice) {
+        this.specialPriceDate = specialPrice;
     }
 
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
 
@@ -75,22 +79,19 @@ public class ModelOfSpecialPrice {
     }
 
 
-    public LocalDateTime getSpeciaPriceDate() {
-        return speciaPriceDate;
+    public LocalDateTime getSpecialPriceDate() {
+        return specialPriceDate;
     }
 
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
 
     public LocalDateTime getEndOfSpecialPrice() {
-        return endOfSpecialPrice;
-    }
+        return endOfSpecialPrice;}
 
-
-    private LocalDateTime endOfSpecialPrice;
 
 
 

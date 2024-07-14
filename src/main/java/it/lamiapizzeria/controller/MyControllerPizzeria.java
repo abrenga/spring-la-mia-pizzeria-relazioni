@@ -1,19 +1,18 @@
 package it.lamiapizzeria.controller;
 
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.lamiapizzeria.model.ModelOfSpecialPrice;
+import it.lamiapizzeria.repository.SpecialPriceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
+import it.lamiapizzeria.model.PizzaDiAmministrazione;
 import it.lamiapizzeria.model.ModelofmenuDB;
 import it.lamiapizzeria.repository.MyRepository;
 import jakarta.validation.Valid;
@@ -21,88 +20,144 @@ import jakarta.validation.Valid;
 @Controller
 public class MyControllerPizzeria {
 
-	/* Per il db */
-	@Autowired
-	private MyRepository repository;
+    /* Per il db */
+    @Autowired
+    private MyRepository repository;
 
-	@GetMapping("/index")
-	public String popuateMenu(@RequestParam(name = "name", required = false) String name, Model model) {
+    @Autowired
+    private SpecialPriceRepo specialPriceRepo;
 
-		List<ModelofmenuDB> menu = new ArrayList<>();
+    @GetMapping("/index")
+    public String popuateMenu(@RequestParam(name = "name", required = false) String name, Model model) {
 
-		if (name == null || name.isBlank()) {
-			menu = repository.findAll();
-		} else {
-			menu = repository.findByName(name);
-		}
+        List<ModelofmenuDB> menu = new ArrayList<>();
 
-		model.addAttribute("pizze", menu);
-		return "index";
-	}
+        if (name == null || name.isBlank()) {
+            menu = repository.findAll();
+        } else {
+            menu = repository.findByName(name);
+        }
 
-	@GetMapping("/index/{id}")
-	public String paginaSingola(@PathVariable(name = "id") Integer id, Model model) {
-		List<ModelofmenuDB> menu = repository.findAll();
-		for (ModelofmenuDB element : menu) {
-			if (element.getId() == id) {
-				model.addAttribute("dettaglioPizza", element);
-			}
-		}
+        model.addAttribute("pizze", menu);
+        return "index";
+    }
 
-		return "dettaglioPizza";
+    @GetMapping("/index/{id}")
+    public String paginaSingola(@PathVariable(name = "id") Integer id, Model model) {
+        ModelofmenuDB pizza = repository.getReferenceById(id);
 
-	}
+        model.addAttribute("dettaglioPizza", pizza);
 
-	
-	@GetMapping("/index/form")
-	public String create(Model model) {
-	 model.addAttribute("menu", new ModelofmenuDB());
 
-	 return "form";
-	}
+        List<ModelOfSpecialPrice> prices = specialPriceRepo.findAllByPizze(pizza);
+        LocalDateTime todatDate = LocalDateTime.now();
+        List<ModelOfSpecialPrice> validOffers = new ArrayList<>();
+        for (int i = 0; i < prices.size(); i++) {
+            ModelOfSpecialPrice price = prices.get(i);
+            if (price.getEndOfSpecialPrice().isAfter(todatDate) && price.getSpecialPriceDate().isBefore(todatDate)) {
+                validOffers.add(price);
+            }
 
-	
-	
-	@PostMapping("/index/form")
-	public String FormDb(@Valid @ModelAttribute("menu") ModelofmenuDB menu,BindingResult bindingResult,
-	Model model){
+        }
+        model.addAttribute("specialPrices", validOffers);
 
-		if(bindingResult.hasErrors()){
-			 return "redirect:/index/form";
-			 }
+        return "dettaglioPizza";
 
-			 repository.save(menu);
-		return "redirect:/index/administration";
-	}
+    }
 
-	@GetMapping("/index/administration")
-	public String administrationEP(Model model) {
-		List <ModelofmenuDB> pizze= repository.findAll();
-		model.addAttribute("pizze", pizze );
-		return "administration";
-	}
-	
-	
-	@GetMapping("/index/formUpdate/{id}")
-	public String administration(@PathVariable(name="id") Integer id, Model model) {
-		model.addAttribute("updated",repository.getReferenceById(id));
-		return "formUpdate";
-	}
 
-	@PostMapping("/formUpdate/{id}")
-	public String update(@Valid @ModelAttribute("updated") ModelofmenuDB updated, BindingResult bindingResult,Model model ){
-		if(bindingResult.hasErrors()){
-			return "redirect:/index/formUpdate/{updated.id}";
-		}
-		repository.save(updated);
-		return "redirect:/index/administration";
-	}
+    @GetMapping("/index/form")
+    public String create(Model model) {
+        model.addAttribute("menu", new ModelofmenuDB());
+        model.addAttribute("update",false);
 
-	@PostMapping("delete/{id}")
-	public String delete(@PathVariable("id")Integer id){
-		repository.deleteById(id);
-		return"redirect:/index/administration";
-	}
-	
-	
+        return "form";
+    }
+
+
+    @PostMapping("/index/form")
+    public String FormDb(@Valid @ModelAttribute("menu") ModelofmenuDB menu, BindingResult bindingResult,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "redirect:/index/form";
+        }
+
+        repository.save(menu);
+        return "redirect:/index/administration";
+    }
+
+    @GetMapping("/index/administration")
+    public String administrationEP(Model model) {
+        /*pizze*/
+        List<ModelofmenuDB> pizze = repository.findAll();
+        model.addAttribute("pizze", pizze);
+        /*special price*/
+        List<PizzaDiAmministrazione> pizzaDiAmministrazione = new ArrayList<PizzaDiAmministrazione>();
+        for(int i =0; i<pizze.size(); i++){
+            ModelofmenuDB pizza = pizze.get(i);
+            List<ModelOfSpecialPrice> spPrice= specialPriceRepo.findAllByPizze(pizza);
+            pizzaDiAmministrazione.add(new PizzaDiAmministrazione(pizza,spPrice));
+        }
+
+        model.addAttribute("pizzaAmministratore", pizzaDiAmministrazione);
+
+
+        return "administration";
+    }
+
+
+    @GetMapping("/index/form/{id}")
+    public String administration(@PathVariable(name = "id") Integer id, Model model) {
+        model.addAttribute("menu", repository.getReferenceById(id));
+        model.addAttribute("update",true);
+
+        return "form";
+    }
+
+    @PostMapping("/form/{id}")
+    public String update(@Valid @ModelAttribute("updated") ModelofmenuDB updated, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/index/formUpdate/{updated.id}";
+        }
+        repository.save(updated);
+        return "redirect:/index/administration";
+    }
+
+    @PostMapping("{resource}/delete/{id}")
+    public String delete(@PathVariable("resource") String resource, @PathVariable("id") Integer id) {
+        switch (resource) {
+            case "pizza":
+                repository.deleteById(id);
+                break;
+            case "specialOffer":
+                specialPriceRepo.deleteById(id);
+                break;
+        }
+
+        return "redirect:/index/administration";
+    }
+
+
+    @GetMapping("/index/formSpecialPrice/{id}")
+    public String specialPriceAdmin(@PathVariable(name = "id") Integer id, Model model) {
+        model.addAttribute("specialPricelist", specialPriceRepo.getReferenceById(id));
+        model.addAttribute("update",true);
+
+        return "formSpecialPrice";
+    }
+
+    @PostMapping("/formSpecialId/{id}")
+    public String specialPriceAdminUpdate(@Valid @ModelAttribute("updated") ModelOfSpecialPrice updated, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/index/formSpecialPrice/{updated.id}";
+        }
+        specialPriceRepo.save(updated);
+        return "redirect:/index/administration";
+    }
+
+    
+
+
+
 }
