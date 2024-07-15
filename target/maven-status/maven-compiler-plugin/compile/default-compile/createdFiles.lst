@@ -1,0 +1,7 @@
+it\lamiapizzeria\controller\MyControllerPizzeria.class
+it\lamiapizzeria\repository\MyRepository.class
+it\lamiapizzeria\LamiapizzeriaApplication.class
+it\lamiapizzeria\model\PizzaDiAmministrazione.class
+it\lamiapizzeria\repository\SpecialPriceRepo.class
+it\lamiapizzeria\model\ModelofmenuDB.class
+it\lamiapizzeria\model\ModelOfSpecialPrice.class

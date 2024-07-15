@@ -1,4 +1,7 @@
-C:\booleaner\java\spring-la-mia-pizzeria-crud\src\main\java\it\lamiapizzeria\controller\MyControllerPizzeria.java
-C:\booleaner\java\spring-la-mia-pizzeria-crud\src\main\java\it\lamiapizzeria\LamiapizzeriaApplication.java
-C:\booleaner\java\spring-la-mia-pizzeria-crud\src\main\java\it\lamiapizzeria\model\ModelofmenuDB.java
-C:\booleaner\java\spring-la-mia-pizzeria-crud\src\main\java\it\lamiapizzeria\repository\MyRepository.java
+c:\booleaner\java\spring-la-mia-pizzeria-relazioni\src\main\java\it\lamiapizzeria\controller\MyControllerPizzeria.java
+c:\booleaner\java\spring-la-mia-pizzeria-relazioni\src\main\java\it\lamiapizzeria\LamiapizzeriaApplication.java
+c:\booleaner\java\spring-la-mia-pizzeria-relazioni\src\main\java\it\lamiapizzeria\model\ModelofmenuDB.java
+c:\booleaner\java\spring-la-mia-pizzeria-relazioni\src\main\java\it\lamiapizzeria\model\ModelOfSpecialPrice.java
+c:\booleaner\java\spring-la-mia-pizzeria-relazioni\src\main\java\it\lamiapizzeria\model\PizzaDiAmministrazione.java
+c:\booleaner\java\spring-la-mia-pizzeria-relazioni\src\main\java\it\lamiapizzeria\repository\MyRepository.java
+c:\booleaner\java\spring-la-mia-pizzeria-relazioni\src\main\java\it\lamiapizzeria\repository\SpecialPriceRepo.java

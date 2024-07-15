@@ -5,17 +5,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.lamiapizzeria.model.ModelOfSpecialPrice;
-import it.lamiapizzeria.repository.SpecialPriceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import it.lamiapizzeria.model.PizzaDiAmministrazione;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import it.lamiapizzeria.model.ModelOfSpecialPrice;
 import it.lamiapizzeria.model.ModelofmenuDB;
+import it.lamiapizzeria.model.PizzaDiAmministrazione;
 import it.lamiapizzeria.repository.MyRepository;
+import it.lamiapizzeria.repository.SpecialPriceRepo;
 import jakarta.validation.Valid;
+
 
 @Controller
 public class MyControllerPizzeria {
@@ -156,6 +162,25 @@ public class MyControllerPizzeria {
         return "redirect:/index/administration";
     }
 
+    @GetMapping("/index/formSpecialPrice")
+    public String createSpecialPrice(Model model) {
+        model.addAttribute("specialPrice", new ModelOfSpecialPrice());
+        model.addAttribute("updated", false);
+
+        return "redirect:/index/administration";}
+
+
+        @PostMapping("/index/formSpecialPrice")
+        public String postSpecialPrice(@Valid @ModelAttribute("specialPrice")ModelOfSpecialPrice specialPrice,BindingResult bindingResult,Model model){
+            if (bindingResult.hasErrors()) {
+                return "redirect:/index/formSpecialPrice/{updated.id}";
+            }
+            specialPriceRepo.save(specialPrice);
+           return   "redirect:/index/administration";
+        }
+        
+    
+    
     
 
 
