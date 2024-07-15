@@ -153,7 +153,7 @@ public class MyControllerPizzeria {
         return "formSpecialPrice";
     }
 
-    @PostMapping("/formSpecialId/{id}")
+    @PostMapping("/formSpecialPrice/{id}")
     public String specialPriceAdminUpdate(@Valid @ModelAttribute("updated") ModelOfSpecialPrice updated, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/index/formSpecialPrice/{updated.id}";
@@ -162,23 +162,27 @@ public class MyControllerPizzeria {
         return "redirect:/index/administration";
     }
 
-    @GetMapping("/index/formSpecialPrice")
-    public String createSpecialPrice(Model model) {
-        model.addAttribute("specialPricelist", new ModelOfSpecialPrice());
+    @GetMapping("/index/formSpecialPrice/{id}/add")
+    public String createSpecialPrice(@PathVariable("id")Integer id, Model model) {
+         ModelOfSpecialPrice specialPrice=new ModelOfSpecialPrice();
+         ModelofmenuDB pizza=repository.getReferenceById(id);
+        specialPrice.setPizze(pizza);
+        model.addAttribute("specialPricelist", specialPrice);
         model.addAttribute("updated", false);
 
         return "formSpecialPrice";
     }
 
 
-        @PostMapping("/index/formSpecialPrice")
-        public String postSpecialPrice(@Valid @ModelAttribute("specialPricelist")ModelOfSpecialPrice specialPrice,BindingResult bindingResult,Model model){
-            if (bindingResult.hasErrors()) {
-                return "redirect:/index/formSpecialPrice/{updated.id}";
-            }
-            specialPriceRepo.save(specialPrice);
-           return   "redirect:/index/administration";
+    @PostMapping("/index/formSpecialPrice")
+    public String postSpecialPrice(@Valid @ModelAttribute("specialPricelist")ModelOfSpecialPrice specialPrice,BindingResult bindingResult,Model model){
+        model.addAttribute("specialPricelist", specialPrice);
+        if (bindingResult.hasErrors()) {
+            return "redirect:/index/formSpecialPrice/{specialPricelist.id}";
         }
+        specialPriceRepo.save(specialPrice);
+       return   "redirect:/index/administration";
+    }
         
     
     

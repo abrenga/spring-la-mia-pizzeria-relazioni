@@ -12,7 +12,7 @@
 <body>
 <div th:replace="~{fragment.html::header-block}"></div>
 <div class="container p-5">
-    <h1 class="mt-5 fs-2 text-center" th:text="${update}? 'Modifica Offerta:' : 'inserisci modifica:'"> </h1>
+    <h1 class="mt-5 fs-2 text-center" th:text="${update}? 'Modifica Offerta:' : 'inserisci offerta:'"> </h1>
     <div class=" d-flex align-items-center position-absolute top-50 start-50 translate-middle">
 
         <form class="mx-auto p-2" style="width: 200px;" id="form-insert" th:object="${specialPricelist}" th:action="${update} ? @{/formSpecialPrice/{id}(id = ${specialPricelist.id})} : @{/index/formSpecialPrice}"
@@ -38,8 +38,10 @@
                 </ul>
             </div>
 
+            <input type="hidden" th:field="${specialPricelist.pizze}" name="pizze"/>
+
             <label for="price">Prezzo:</label>
-            <input type="date" id="price" th:field="${specialPricelist.specialPriceDate}" th:errorClass="is-invalid">
+            <input type="datetime-local" id="price" th:field="${specialPricelist.specialPriceDate}" th:errorClass="is-invalid">
             <div th:if="${#fields.hasErrors('specialPriceDate')}" class="invalid-feedback">
 
 

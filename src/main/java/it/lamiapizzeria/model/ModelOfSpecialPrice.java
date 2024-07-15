@@ -10,13 +10,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table
 public class ModelOfSpecialPrice {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String nameOfSpecialPrice;
@@ -25,19 +26,22 @@ public class ModelOfSpecialPrice {
         this.specialPriceDate = specialPriceDate;
     }
 
-    @Column(name="special_price", nullable=false)
+    @DateTimeFormat(pattern = "dd-MM-YYYY")
+    @Column(name = "special_price", nullable = false)
     private LocalDateTime specialPriceDate;
 
 
-    @Column()
     private String description;
+
+    @DateTimeFormat(pattern = "dd-MM-YYYY")
+    private LocalDateTime endOfSpecialPrice;
 
 
     @ManyToOne
-    @JoinColumn(name="pizza_id" ,nullable=false)
+    @JoinColumn(name = "pizza_id", nullable = false)
     private ModelofmenuDB pizze;
 
-    private LocalDateTime endOfSpecialPrice;
+
 
     public Integer getId() {
         return id;
@@ -90,14 +94,13 @@ public class ModelOfSpecialPrice {
 
 
     public LocalDateTime getEndOfSpecialPrice() {
-        return endOfSpecialPrice;}
-
-
+        return endOfSpecialPrice;
+    }
 
 
     public void setPizze(ModelofmenuDB pizze) {
         this.pizze = pizze;
     }
 
-    
+
 }
