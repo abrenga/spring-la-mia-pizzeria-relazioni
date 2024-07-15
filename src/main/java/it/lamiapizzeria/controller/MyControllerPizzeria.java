@@ -164,14 +164,15 @@ public class MyControllerPizzeria {
 
     @GetMapping("/index/formSpecialPrice")
     public String createSpecialPrice(Model model) {
-        model.addAttribute("specialPrice", new ModelOfSpecialPrice());
+        model.addAttribute("specialPricelist", new ModelOfSpecialPrice());
         model.addAttribute("updated", false);
 
-        return "redirect:/index/administration";}
+        return "formSpecialPrice";
+    }
 
 
         @PostMapping("/index/formSpecialPrice")
-        public String postSpecialPrice(@Valid @ModelAttribute("specialPrice")ModelOfSpecialPrice specialPrice,BindingResult bindingResult,Model model){
+        public String postSpecialPrice(@Valid @ModelAttribute("specialPricelist")ModelOfSpecialPrice specialPrice,BindingResult bindingResult,Model model){
             if (bindingResult.hasErrors()) {
                 return "redirect:/index/formSpecialPrice/{updated.id}";
             }

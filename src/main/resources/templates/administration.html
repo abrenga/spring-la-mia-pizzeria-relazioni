@@ -124,7 +124,7 @@
                                     <td th:text="${price.specialPriceDate}"></td>
                                     <td th:text="${price.description}"></td>
                                     <td>
-                                        <a type="button" th:href="@{/index/formSpecialPrice}">
+                                        <a  th:href="@{/index/formSpecialPrice}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor"
                                                  class="bi bi-plus-square-fill" viewBox="0 0 16 16">
@@ -133,7 +133,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a type="button" th:href="@{/index/formSpecialPrice}">
+                                        <a th:href="@{/index/formSpecialPrice/{id}(id=${price.getId()})}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor"
                                                  class="bi bi-pencil" viewBox="0 0 16 16">

@@ -19,7 +19,7 @@ public class ModelOfSpecialPrice {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-    private String NameOfSpecialPrice;
+    private String nameOfSpecialPrice;
 
     public void setSpecialPriceDate(LocalDateTime specialPriceDate) {
         this.specialPriceDate = specialPriceDate;
@@ -55,7 +55,7 @@ public class ModelOfSpecialPrice {
 
 
     public void setNameOfSpecialPrice(String nameOfSpecialPrice) {
-        NameOfSpecialPrice = nameOfSpecialPrice;
+        this.nameOfSpecialPrice = nameOfSpecialPrice;
     }
 
 
@@ -75,7 +75,7 @@ public class ModelOfSpecialPrice {
 
 
     public String getNameOfSpecialPrice() {
-        return NameOfSpecialPrice;
+        return nameOfSpecialPrice;
     }
 
 
