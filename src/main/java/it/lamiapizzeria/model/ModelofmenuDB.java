@@ -1,12 +1,19 @@
 package it.lamiapizzeria.model;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
-import java.util.List;
 
 
 @Entity
@@ -19,7 +26,6 @@ public class ModelofmenuDB{
 
 
 	@Column(name="type_of_pizza", nullable=false)
-	@NotNull(message="please enter a value")
 	@NotBlank(message="please enter a value")
 	private String name;
 
@@ -36,6 +42,16 @@ public class ModelofmenuDB{
 	@Column(name="prezzo", nullable=false)
 	@DecimalMin(value = "0", inclusive = false, message="please enter a value")
 	private float prezzo;
+
+
+@ManyToMany()
+@JoinTable(
+	name="pizze_ingredients",
+	joinColumns=@JoinColumn(name="pizza_id"),
+	inverseJoinColumns=@JoinColumn(name="ingredients_id")
+)
+private List<Ingredients> ingredienst;
+
 
 	public Integer getId() {
 		return id;
@@ -76,6 +92,22 @@ public class ModelofmenuDB{
 	public void setPrezzo(float prezzo) {
 		this.prezzo = prezzo;
 	}
+
+    public List<ModelOfSpecialPrice> getSpecialPrice() {
+        return specialPrice;
+    }
+
+    public List<Ingredients> getIngredienst() {
+        return ingredienst;
+    }
+
+    public void setSpecialPrice(List<ModelOfSpecialPrice> specialPrice) {
+        this.specialPrice = specialPrice;
+    }
+
+    public void setIngredienst(List<Ingredients> ingredienst) {
+        this.ingredienst = ingredienst;
+    }
 
 
 
