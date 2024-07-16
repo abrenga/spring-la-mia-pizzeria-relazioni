@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.lamiapizzeria.model.Ingredients;
+import it.lamiapizzeria.repository.IngredientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,9 @@ public class MyControllerPizzeria {
 
     @Autowired
     private SpecialPriceRepo specialPriceRepo;
+
+    @Autowired
+    private IngredientsRepository IngredientsRepository;
 
     @GetMapping("/index")
     public String popuateMenu(@RequestParam(name = "name", required = false) String name, Model model) {
@@ -98,12 +103,15 @@ public class MyControllerPizzeria {
         /*pizze*/
         List<ModelofmenuDB> pizze = repository.findAll();
         model.addAttribute("pizze", pizze);
+        /*Ingredients*/
+
         /*special price*/
         List<PizzaDiAmministrazione> pizzaDiAmministrazione = new ArrayList<PizzaDiAmministrazione>();
         for(int i =0; i<pizze.size(); i++){
             ModelofmenuDB pizza = pizze.get(i);
             List<ModelOfSpecialPrice> spPrice= specialPriceRepo.findAllByPizze(pizza);
-            pizzaDiAmministrazione.add(new PizzaDiAmministrazione(pizza,spPrice));
+            List<Ingredients> ingredients= IngredientsRepository.findAllByMenu(pizza);
+            pizzaDiAmministrazione.add(new PizzaDiAmministrazione(pizza,spPrice, ingredients));
         }
 
         model.addAttribute("pizzaAmministratore", pizzaDiAmministrazione);

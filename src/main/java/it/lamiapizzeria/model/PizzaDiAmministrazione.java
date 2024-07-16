@@ -4,11 +4,14 @@ import java.util.List;
 
 public class PizzaDiAmministrazione {
     private ModelofmenuDB nomePizzaAmministratore;
-    private List<ModelOfSpecialPrice> SpecialPriceAmministratore;
 
-    public PizzaDiAmministrazione(ModelofmenuDB nomePizzaAmministratore, List<ModelOfSpecialPrice> SpecialPriceAmministratore ) {
+    private List<ModelOfSpecialPrice> SpecialPriceAmministratore;
+    private  List<Ingredients> ingredients;
+
+    public PizzaDiAmministrazione(ModelofmenuDB nomePizzaAmministratore, List<ModelOfSpecialPrice> SpecialPriceAmministratore, List<Ingredients>ingredients) {
         this.nomePizzaAmministratore = nomePizzaAmministratore;
         this.SpecialPriceAmministratore = SpecialPriceAmministratore;
+        this.ingredients= ingredients;
     }
 
 
@@ -25,5 +28,13 @@ public class PizzaDiAmministrazione {
 
     public void setSpecialPriceAmministratore(List<ModelOfSpecialPrice> specialPriceAmministratore) {
         SpecialPriceAmministratore = specialPriceAmministratore;
+    }
+
+    public List<Ingredients> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredients> ingredients) {
+        this.ingredients = ingredients;
     }
 }
