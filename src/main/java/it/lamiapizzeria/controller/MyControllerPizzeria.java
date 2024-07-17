@@ -8,6 +8,7 @@ import java.util.List;
 import it.lamiapizzeria.model.Ingredients;
 import it.lamiapizzeria.repository.IngredientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,6 +38,8 @@ public class MyControllerPizzeria {
 
     @Autowired
     private IngredientsRepository IngredientsRepository;
+    @Autowired
+    private IngredientsRepository ingredientsRepository;
 
     @GetMapping("/index")
     public String popuateMenu(@RequestParam(name = "name", required = false) String name, Model model) {
@@ -118,6 +121,11 @@ public class MyControllerPizzeria {
 
 
         return "administration";
+    }
+
+
+    public void addIngredients(ModelofmenuDB pizza){
+        pizza.getIngredienst().add(ingredientsRepository.getReferenceById(1));
     }
 
 
